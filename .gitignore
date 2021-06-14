@@ -1,0 +1,8 @@
+.DS_Store
+/Manifest.toml
+/dev/
+/docs/build/
+/docs/site/
+/test/Manifest.toml
+
+*.key
