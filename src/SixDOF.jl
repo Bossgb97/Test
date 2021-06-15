@@ -6,6 +6,65 @@ using Plots
 export MassProp, State
 export Atmosphere
 #export sixdof!
+# ------------ GENERIC MODULES -------------------------------------------------
+import Dierckx
+import CSV
+import DataFrames
+import JLD
+import Dates
+using PyPlot
+using LinearAlgebra: cross, I
+
+# ------------ FLOW CODES ------------------------------------------------------
+# FLOWVLM https://github.com/byuflowlab/FLOWVLM
+import FLOWVLM
+const vlm = FLOWVLM
+
+# FLOWVPM https://github.com/byuflowlab/FLOWVPM.jl
+try                     # Load FLOWVPM if available
+    import FLOWVPM
+catch e                 # Otherwise load a dummy version of FLOWVPM
+    @warn("FLOWVPM module not found. Using dummy module instead.")
+    include("FLOWUnsteady_dummy_FLOWVPM.jl")
+end
+const vpm = FLOWVPM
+
+# GeometricTools https://github.com/byuflowlab/GeometricTools.jl
+import GeometricTools
+const gt = GeometricTools
+
+import FLOWNoise
+const noise = FLOWNoise
+
+# BPM https://github.com/byuflowlab/BPM.jl
+import BPM
+
+# ------------ GLOBAL VARIABLES ------------------------------------------------
+const module_path = splitdir(@__FILE__)[1]                # Path to this module
+const def_data_path = joinpath(module_path, "../data/")   # Default path to data folder
+
+
+# ------------ HEADERS ---------------------------------------------------------
+# Load modules
+#for module_name in ["vehicle", "vehicle_vlm",
+#                    "maneuver", "rotor",
+#                    "simulation_types", "simulation", "utils",
+#                    "processing", "monitors",
+#                    "noise_wopwop", "noise_bpm"]
+                    include("FLOWUnsteady_vehicle.jl")
+                    include("FLOWUnsteady_vehicle_vlm.jl")
+                    include("FLOWUnsteady_maneuver.jl")
+                    include("FLOWUnsteady_rotor.jl")
+                    include("FLOWUnsteady_simulation_types.jl")
+                    include("FLOWUnsteady_simulation.jl")
+                    include("FLOWUnsteady_utils.jl")
+                    include("FLOWUnsteady_processing.jl")
+                    include("FLOWUnsteady_monitors.jl")
+                    include("FLOWUnsteady_noise_wopwop.jl")
+                    include("FLOWUnsteady_noise_bpm.jl")
+#end
+
+#end # END OF MODULE
 
 
 # ------ General Structs -------
